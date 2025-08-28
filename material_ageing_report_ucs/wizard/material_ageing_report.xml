@@ -11,6 +11,7 @@
                         <group>
                             <separator string="Material Ageing Report" invisible="1"/>
                             <field name="product_ids" widget="many2many_tags" options="{'no_create': True}"/>
+                            <field name="location_ids" widget="many2many_tags" options="{'no_create': True}"/>
                         </group>
                         <group>
                             <separator string="Material Ageing Report" invisible="1"/>

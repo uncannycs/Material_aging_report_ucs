@@ -27,6 +27,7 @@ class MaterialAgeingReport(models.TransientModel):
     company_id = fields.Many2one('res.company', string='Company', required=True,
                                  default=lambda self: self.env.user.company_id)
     product_ids = fields.Many2many('product.product', string='Product')
+    location_ids = fields.Many2many('stock.quant',string='Location')
 
     def action_report(self):
         move_obj = self.env['stock.move']
@@ -62,6 +63,10 @@ class MaterialAgeingReport(models.TransientModel):
             domain += [('product_id', 'in', self.product_ids.ids)]
             inventory_domain += [('product_id', 'in', self.product_ids.ids)]
             # filters += product_str
+
+        if self.location_ids:
+            domain += [('location_dest_id', 'in', self.location_ids.ids)]
+            inventory_domain += [('location_id', 'in', self.location_ids.ids)]
 
         purchase_moves = move_obj.search(domain, order="product_id")
         purchase_moves = purchase_moves.filtered(
@@ -143,8 +148,13 @@ class MaterialAgeingReport(models.TransientModel):
             if lot_ids:
                 lot_ids_list = lot_ids and lot_ids.mapped('name') or []
                 lot_ids_str = str(lot_ids_list).replace("[", "").replace("]", "").replace("'", "")
-                quants = quant_obj.search([('product_id', '=', each.product_id.id), ('lot_id', 'in', lot_ids.ids),
-                                           ('location_id.usage', '=', 'internal')])
+                # quants = quant_obj.search([('product_id', '=', each.product_id.id), ('lot_id', 'in', lot_ids.ids),
+                #                            ('location_id.usage', '=', 'internal')])
+                # remaining_qty = sum(quant.quantity for quant in quants)
+                quant_domain = [('product_id', '=', each.product_id.id),('lot_id', 'in', lot_ids.ids),('location_id.usage', '=', 'internal')]
+                if self.location_ids:
+                    quant_domain = [('product_id', '=', each.product_id.id),('lot_id', 'in', lot_ids.ids),('location_id', 'in', self.location_ids.ids)]
+                quants = quant_obj.search(quant_domain)
                 remaining_qty = sum(quant.quantity for quant in quants)
                 sheet1.write(row, 6, remaining_qty and remaining_qty or 0, Style.normal_num_right())
                 sheet1.write(row, 7, lot_ids_str and lot_ids_str or "", Style.normal_left())
