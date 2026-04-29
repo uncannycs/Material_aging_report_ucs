@@ -15,5 +15,8 @@
         'security/ir.model.access.csv',
         'views/stock_location_views.xml',
         'wizard/material_ageing_report.xml'
+
     ],
+    "price":90.00,
+    "currency":'USD',
 }
