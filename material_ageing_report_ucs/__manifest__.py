@@ -8,6 +8,8 @@
     "author": "Uncanny Consulting Services LLP",
     "maintainers": "Uncanny Consulting Services LLP",
     "license": "Other proprietary",
+    "price":90.00,
+    "currency":'USD',
     'category': 'Inventory',
     'depends': ['base','sale','purchase','product','stock','stock_account'],
 
