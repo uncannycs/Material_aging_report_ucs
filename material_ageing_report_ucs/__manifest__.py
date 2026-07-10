@@ -18,4 +18,5 @@
     ],
     "price":90.00,
     "currency":'USD',
+    'images': ['static/description/banner.gif'],
 }
