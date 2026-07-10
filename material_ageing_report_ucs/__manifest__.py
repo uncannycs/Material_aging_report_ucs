@@ -18,4 +18,5 @@
         'views/stock_location_views.xml',
         'wizard/material_ageing_report.xml'
     ],
+    'images': ['static/description/banner.gif'],
 }
