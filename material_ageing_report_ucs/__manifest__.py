@@ -17,6 +17,7 @@
         'wizard/material_ageing_report.xml'
 
     ],
+    'images': ['static/description/banner.gif'],
     "price":90.00,
     "currency":'USD',
 }
